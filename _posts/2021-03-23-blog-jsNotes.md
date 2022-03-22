@@ -25,4 +25,7 @@ var inpuValue = document.getElementById('formId').elements['name'].value;
 to get the value.
 
 
+### form steps
+http://www.jquery-steps.com/Examples
+
 
