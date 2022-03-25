@@ -76,5 +76,32 @@ add_shortcode( 'buttoncp', function () {
 } );
 ```
 
+### change button login or logout
+```php
+add_shortcode( 'login_logout', 'login_logout' );
+/**
+ * Add a login/logout shortcode button
+ * @since 1.0.0
+ */
+function login_logout() {
+ob_start();
+    if (is_user_logged_in()) : 
+    // Set the logout URL - below it is set to the root URL
+    ?>
+<a href="<?php echo wp_logout_url('/'); ?>"><img src="/">Log Out</a>
+
+<?php 
+    else : 
+    // Set the login URL - below it is set to get_permalink() - you can set that to whatever URL eg '/whatever'
+?>
+    <a href="https://xxx/login/"><img src="/">Log In</a>
+
+<?php 
+    endif;
+
+return ob_get_clean();
+}
+```
+
 
 
