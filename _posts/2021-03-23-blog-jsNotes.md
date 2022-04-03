@@ -29,3 +29,9 @@ to get the value.
 http://www.jquery-steps.com/Examples
 
 
+### make the html content cant click
+```js
+  document.getElementById("trial").style.pointerEvents = "none";
+
+```
+

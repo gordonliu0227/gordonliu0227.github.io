@@ -105,3 +105,16 @@ return ob_get_clean();
 
 
 
+### get user related info from database
+
+```php
+//get user id
+$uid = get_current_user_id();
+echo $uid;
+//get infn from database, it usually will return an object( array)
+$results = $wpdb->get_results("SELECT `plan` FROM `database table name` WHERE `wpUserID` = '$uid'"); 
+$plan = $results[0] -> plan;
+
+echo $plan;
+
+```
