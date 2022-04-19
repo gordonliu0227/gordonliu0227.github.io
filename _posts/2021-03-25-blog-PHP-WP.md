@@ -118,3 +118,69 @@ $plan = $results[0] -> plan;
 echo $plan;
 
 ```
+
+### get form data from html then transfer to php (function.php)
+//list all subuser(students) and reset to another teacher
+```php
+
+      <?php $sids = is_school() ? students_of_school() : students_of_teacher(); ?>
+      <div class=''>
+        <form method="POST" action=''>
+          <select name="studentsSelect" multiple="multiple" id="studentsSelect" class="custom-select" size="10">
+            <?php foreach ($sids as $sid) { ?>
+              <option value="<?php echo $sid; ?>" selected=""><?php echo get_username($sid); ?></option>
+            <?php } ?>
+          </select>
+          <?php
+          $ctid = get_current_user_id();
+          $oldtids = teachers_of_school($ctid); ?>
+          <select name="mySelect1" id="teacherSelect" class="custom-select">
+            <?php foreach ($oldtids as $otid) { ?>
+              <option value="<?php echo $otid; ?>" selected=""><?php echo get_username($otid); ?></option>
+            <?php } ?>
+          </select>
+        </form>
+        <button class="actionButton" id="submitButton" type="submit" value="Click To Submit">Reassign Students</button>
+      </div>
+      <!-- test for multi select -->
+      <script>
+        $(function() {
+          $('#submitButton').click(function() {
+            var studentsSelected = $('#studentsSelect').val();
+            var newTeacherSelected = $('#teacherSelect').val();
+            // alert(studentsSelected +"teacher selected"+ newTeacherSelected);
+            $.ajax({
+              type: 'POST',
+              url: '<?php echo admin_url('admin-ajax.php'); ?>',
+              data: {
+                  //transfer data by ajax
+                action: 'student_reassign',
+                stustudentsSelecteddent_id: studentsSelected,
+                newTeacherSelected: newTeacherSelected
+              },
+              success: function() {
+                window.location.reload();
+              }
+            })
+          });
+        });
+      </script>
+
+
+      // in function.php 
+      function student_reassign()
+{
+
+  $stustudentsSelecteddent_id = $_POST['stustudentsSelecteddent_id'];
+  $newTeacherSelected = intval(sanitize_text_field($_POST['newTeacherSelected']));
+  foreach ($stustudentsSelecteddent_id as $sid){
+    $old_tid = teacher_of_student($sid);
+    delete_user_meta($old_tid, 'students', $sid);
+    delete_user_meta($old_tid, 'student_' . $sid);
+    add_user_meta($newTeacherSelected, 'students', $sid);
+    update_user_meta($newTeacherSelected, 'student_' . $sid, true);
+    update_user_meta($sid, 'teacher', $newTeacherSelected);
+  }
+}
+add_action('wp_ajax_student_reassign', 'student_reassign');
+      ```
