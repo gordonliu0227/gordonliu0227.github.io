@@ -35,3 +35,47 @@ http://www.jquery-steps.com/Examples
 
 ```
 
+### ajax post data
+```js
+<div class=''>
+        <form method="POST" action=''>
+          <select name="studentsSelect" multiple="multiple" id="studentsSelect" class="custom-select" size="10">
+            <?php foreach ($sids as $sid) { ?>
+              <option value="<?php echo $sid; ?>" selected=""><?php echo get_username($sid); ?></option>
+            <?php } ?>
+          </select>
+          <?php
+          $ctid = get_current_user_id();
+          $oldtids = teachers_of_school($ctid); ?>
+          <select name="mySelect1" id="teacherSelect" class="custom-select">
+            <?php foreach ($oldtids as $otid) { ?>
+              <option value="<?php echo $otid; ?>" selected=""><?php echo get_username($otid); ?></option>
+            <?php } ?>
+          </select>
+        </form>
+        <button class="actionButton" id="submitButton" type="submit" value="Click To Submit">Reassign Students</button>
+      </div>
+
+      
+$(function() {
+          $('#submitButton').click(function() {
+            var studentsSelected = $('#studentsSelect').val();
+            var newTeacherSelected = $('#teacherSelect').val();
+            // alert(studentsSelected +"teacher selected"+ newTeacherSelected);
+            $.ajax({
+              type: 'POST',
+              url: '<?php echo admin_url('admin-ajax.php'); ?>',
+              data: {
+                  //transfer data by ajax
+                action: 'student_reassign',
+                stustudentsSelecteddent_id: studentsSelected,
+                newTeacherSelected: newTeacherSelected
+              },
+              success: function() {
+                window.location.reload();
+              }
+            })
+          });
+        });
+```
+
