@@ -202,3 +202,30 @@ if (strpos($url,'car') !== false) {
     echo 'No cars.';
 }
 ```
+
+### use checkbox to change the button clickable or unclickable
+```html
+  <div class="d-flex justify-content-center subDiv" style=" pointer-events: none;">
+    <form method="POST" action=''>
+      <input type="hidden" name="action" id="trialuserid" value="<?php echo get_current_user_id(); ?>">
+    </form>
+    <button type='submit' class='actionButton d-block' id="submitButton1 checkButton" >Subscribe Now!</button>
+
+
+  </div>
+  <div class="d-flex justify-content-center  mt-3 mb-5">
+	<input class="align-self-center mx-2" type="checkbox" id="myCheck" onclick="myFunction()">By clicking Subscribe I understand that my trial subscription will be cancelled.</input>
+
+  </div>
+  ```
+  ```php
+  function myFunction() {
+  var checkBox = document.getElementById("myCheck");
+  var text = document.getElementById("checkButton");
+  if (checkBox.checked == true){
+    $('.subDiv').css({pointerEvents: ""})
+  } else {
+    $('.subDiv').css({pointerEvents: "none"})
+  }
+  }
+```
